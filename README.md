@@ -134,8 +134,8 @@ mvn -q -DskipTests=false test
   ```markdown
   ## Übung 1
 
-  - Autor: <Lichetnberger Marco>
-  - Besonderheit: <Bisher nur wenig Erfahrung mit GIT in Rahmen des Projekts (Alles auf Main Branch pushen was man erledigt hat.)>
+  - Autor: <Lichtenberger Marco>
+  - Besonderheiten: <Bisher nur wenig Erfahrung mit GIT in Rahmen des Projekts (Alles auf Main Branch pushen was man erledigt hat.>
   ```
 
 - Reiche den **Repo-Link** in eLearning bis **14.10.2025, 23:55** ein.
