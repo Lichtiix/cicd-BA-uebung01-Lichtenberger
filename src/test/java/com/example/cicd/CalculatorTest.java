@@ -9,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Hinweise:
  * - Ergänze weitere Testfälle (z. B. negative Zahlen, große Werte)
- * - Diskutiere das Verhalten von divide(… , 0) und entscheide in Ü2, ob Exception sinnvoller ist
+ * - Diskutiere das Verhalten von divide(… , 0) und entscheide in Ü2, ob
+ * Exception sinnvoller ist
  */
 class CalculatorTest {
 
@@ -32,5 +33,12 @@ class CalculatorTest {
         Calculator c = new Calculator();
         List<Integer> nums = Arrays.asList(1, 2, 3, null, 4);
         assertEquals(c.sumUp(nums), c.addAll(nums));
+    }
+
+    // Extra Test für die Aufgabe 2)
+    @Test
+    void calculator_subtract_negativeResult() {
+        Calculator c = new Calculator();
+        assertEquals(-1, c.subtract(2, 3)); // prüft negatives Ergebnis
     }
 }
