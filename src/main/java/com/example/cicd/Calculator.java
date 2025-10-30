@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Calculator {
 
-    public static int MAX_OPERANDS = 100;
+    private static final int MAX_OPERANDS = 100;
 
     // Einfacher Addierer
     public int add(int a, int b) {
@@ -23,7 +23,7 @@ public class Calculator {
     // (Bug/Code Smell – wird von Sonar i.d.R. markiert)
     public int divide(int a, int b) {
         if (b == 0) {
-            return 0; 
+            return 0;
         }
         return a / b; // Integer Division
     }
@@ -47,5 +47,9 @@ public class Calculator {
             }
         }
         return s;
+    }
+
+    public static int getMaxOperands() {
+        return MAX_OPERANDS;
     }
 }
