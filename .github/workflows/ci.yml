@@ -1,14 +1,18 @@
 name: CI
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
   build-test:
-    name: "Build & Test (${{ matrix.os }} / Java ${{ matrix.java }})"
+    name: Build & Test (${{ matrix.os }} / Java ${{ matrix.java }})
     strategy:
       fail-fast: true
       matrix:
         os: [ubuntu-latest, windows-latest]
         java: [17, 21]
+
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -21,7 +25,7 @@ jobs:
           java-version: ${{ matrix.java }}
           distribution: temurin
 
-      - name: Build and test
+      - name: Build and Test
         run: mvn -B -DskipTests=false verify
 
       - name: Upload Surefire reports
