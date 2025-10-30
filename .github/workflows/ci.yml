@@ -48,4 +48,5 @@ jobs:
           mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar \
             -Dsonar.login=638d949c68941115dfe7a790184f847a660da45a \
             -Dsonar.organization=lichtiix \
-            -Dsonar.projectKey=Lichtiix_cicd-BA-uebung01-Lichtenberger
+            -Dsonar.projectKey=Lichtiix_cicd-BA-uebung01-Lichtenberger \
+            -Dsonar.host.url=https://sonarcloud.io
