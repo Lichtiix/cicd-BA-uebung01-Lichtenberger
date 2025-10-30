@@ -1,7 +1,7 @@
 # CI/CD Übung – Java Basisprojekt (Ü1 mit Anleitungen)
 # CI/CD Übung 02
 
-![CI](https://github.com/<USER>/<REPO>/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/Lichtiix/cicd-BA-uebung01-Lichtenberger/actions/workflows/ci.yml/badge.svg)
 
 
 Dieses Repository ist der Startpunkt für **Übung 1** und wird in **allen folgenden Übungen** weiterverwendet
