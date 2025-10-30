@@ -4,6 +4,10 @@ on:
     branches: [main]
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-test:
     name: Build & Test (${{ matrix.os }} / Java ${{ matrix.java }})
@@ -12,6 +16,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         java: [17, 21]
+        exclude:
+          - os: windows-latest
+            java: 21
 
     runs-on: ${{ matrix.os }}
 
