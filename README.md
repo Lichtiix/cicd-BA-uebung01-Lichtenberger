@@ -1,4 +1,8 @@
 # CI/CD Übung – Java Basisprojekt (Ü1 mit Anleitungen)
+# CI/CD Übung 02
+
+![CI](https://github.com/<USER>/<REPO>/actions/workflows/ci.yml/badge.svg)
+
 
 Dieses Repository ist der Startpunkt für **Übung 1** und wird in **allen folgenden Übungen** weiterverwendet
 (CI mit GitHub Actions → SonarCloud → Docker → Security-Scan).
