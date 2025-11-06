@@ -98,25 +98,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Docker Buildx Setup (optional, moderne Builds)
+      # Docker Buildx Setup
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Docker Image bauen und taggen
+      # Docker Image bauen und mit Short SHA taggen
       - name: Build Docker image
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
+          echo "Building Docker image with tag: myapp:$SHORT_SHA"
           docker build -t myapp:$SHORT_SHA .
 
-      # Image als .tar speichern
+      # Image als .tar speichern (Short SHA)
       - name: Save Docker image
         run: |
           SHORT_SHA=${GITHUB_SHA::7}
+          echo "Saving Docker image as docker-image-$SHORT_SHA.tar"
           docker save myapp:$SHORT_SHA -o docker-image-$SHORT_SHA.tar
 
-      # Artifact hochladen
+      # Artifact hochladen (korrekter Pfad, Short SHA)
       - name: Upload Docker Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: docker-image-${{ github.sha }}.tar
-          path: docker-image-${{ github.sha }}.tar
+          name: docker-image-${{ github.sha::7 }}.tar # nur für Artifact-Name
+          path: docker-image-${GITHUB_SHA::7}.tar # Pfad muss exakt zur Datei passen
