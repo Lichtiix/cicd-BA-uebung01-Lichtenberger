@@ -3,6 +3,8 @@
 
 ![CI](https://github.com/Lichtiix/cicd-BA-uebung01-Lichtenberger/actions/workflows/ci.yml/badge.svg)
 
+![CI](https://github.com/Lichtiix/cicd-BA-uebung01-Lichtenberger/actions/workflows/docker.yml/badge.svg)
+
 
 Dieses Repository ist der Startpunkt für **Übung 1** und wird in **allen folgenden Übungen** weiterverwendet
 (CI mit GitHub Actions → SonarCloud → Docker → Security-Scan).
