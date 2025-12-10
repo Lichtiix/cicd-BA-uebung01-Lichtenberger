@@ -14,12 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Load Docker image
+        run: docker load -i Images/image-5ab3994.tar
+
       - name: Install Grype
         run: |
           curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Run Grype scan
-        run: grype . -o json > grype-report.json
+        run: |
+          IMAGE_TAG=$(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1)
+          grype "$IMAGE_TAG" -o json > grype-report.json
 
       - name: Upload Grype report
         uses: actions/upload-artifact@v4
@@ -35,6 +40,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Load Docker image
+        run: docker load -i Images/image-5ab3994.tar
+
       - name: Install Trivy
         run: |
           sudo apt-get update
@@ -45,7 +53,9 @@ jobs:
           sudo apt-get install trivy -y
 
       - name: Run Trivy scan
-        run: trivy fs . --format json --output trivy-report.json
+        run: |
+          IMAGE_TAG=$(docker images --format "{{.Repository}}:{{.Tag}}" | head -n 1)
+          trivy image "$IMAGE_TAG" --scanners vuln --format json --output trivy-report.json
 
       - name: Upload Trivy report
         uses: actions/upload-artifact@v4
