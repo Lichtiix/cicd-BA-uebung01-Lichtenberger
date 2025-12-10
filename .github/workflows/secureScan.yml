@@ -14,21 +14,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build local Docker image
-        run: docker build -t cicd-app:local .
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "maven"
+
+      - name: Build with Maven and generate dependencies
+        run: mvn clean package -DskipTests
 
       - name: Install Grype
         run: |
           curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
 
-      - name: Run Grype scan
-        run: grype cicd-app:local --scope all-layers -o json > grype-report.json
+      - name: Scan Maven Dependencies with Grype
+        run: grype dir:. -o json > grype-maven-report.json
 
-      - name: Upload Grype report
+      - name: Upload Grype Maven report
         uses: actions/upload-artifact@v4
         with:
-          name: grype-report
-          path: grype-report.json
+          name: grype-maven-report
+          path: grype-maven-report.json
 
       - name: Install Trivy
         run: |
@@ -39,11 +46,32 @@ jobs:
           sudo apt-get update
           sudo apt-get install trivy -y
 
-      - name: Run Trivy scan
-        run: trivy image cicd-app:local --scanners vuln --format json --output trivy-report.json --java-db-repository public.ecr.aws/aquasecurity/trivy-java-db:1
+      - name: Scan Maven Dependencies with Trivy
+        run: trivy fs --scanners vuln --format json --output trivy-maven-report.json .
 
-      - name: Upload Trivy report
+      - name: Upload Trivy Maven report
         uses: actions/upload-artifact@v4
         with:
-          name: trivy-report
-          path: trivy-report.json
+          name: trivy-maven-report
+          path: trivy-maven-report.json
+
+      - name: Build local Docker image
+        run: docker build -t cicd-app:local .
+
+      - name: Run Grype scan on Docker Image
+        run: grype cicd-app:local --scope all-layers -o json > grype-docker-report.json
+
+      - name: Upload Grype Docker report
+        uses: actions/upload-artifact@v4
+        with:
+          name: grype-docker-report
+          path: grype-docker-report.json
+
+      - name: Run Trivy scan on Docker Image
+        run: trivy image cicd-app:local --scanners vuln --format json --output trivy-docker-report.json
+
+      - name: Upload Trivy Docker report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-docker-report
+          path: trivy-docker-report.json
