@@ -29,7 +29,7 @@ jobs:
           curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Scan Maven Dependencies with Grype
-        run: grype dir:. -o json > grype-maven-report.json
+        run: grype dir:. --fail-on high --only-fixed -o json > grype-maven-report.json
 
       - name: Upload Grype Maven report
         uses: actions/upload-artifact@v4
@@ -47,7 +47,15 @@ jobs:
           sudo apt-get install trivy -y
 
       - name: Scan Maven Dependencies with Trivy
-        run: trivy fs --scanners vuln --format json --output trivy-maven-report.json .
+        run: |
+          trivy fs \
+            --scanners vuln \
+            --severity HIGH,CRITICAL \
+            --ignore-unfixed \
+            --exit-code 1 \
+            --format json \
+            --output trivy-maven-report.json \
+            .
 
       - name: Upload Trivy Maven report
         uses: actions/upload-artifact@v4
@@ -59,7 +67,7 @@ jobs:
         run: docker build -t cicd-app:local .
 
       - name: Run Grype scan on Docker Image
-        run: grype cicd-app:local --scope all-layers -o json > grype-docker-report.json
+        run: grype cicd-app:local --scope all-layers --fail-on high --only-fixed -o json > grype-docker-report.json
 
       - name: Upload Grype Docker report
         uses: actions/upload-artifact@v4
@@ -68,7 +76,14 @@ jobs:
           path: grype-docker-report.json
 
       - name: Run Trivy scan on Docker Image
-        run: trivy image cicd-app:local --scanners vuln --format json --output trivy-docker-report.json
+        run: |
+          trivy image cicd-app:local \
+            --scanners vuln \
+            --severity HIGH,CRITICAL \
+            --ignore-unfixed \
+            --exit-code 1 \
+            --format json \
+            --output trivy-docker-report.json
 
       - name: Upload Trivy Docker report
         uses: actions/upload-artifact@v4
